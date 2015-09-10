@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+<HEAD>
+<TITLE>Enscript Output</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD">
+<A NAME="top">
+<A NAME="file1">
+<H1>/Users/kurokawa/.tcshrc</H1>
+
+<PRE>
+<I><FONT COLOR="#B22222">### my tcshrc ###
+</FONT></I>
+<I><FONT COLOR="#B22222">#set prompt = '%B[%m:%/] '
+</FONT></I><B><FONT COLOR="#A020F0">set</FONT></B> <B><FONT COLOR="#DA70D6">prompt</FONT></B> = '[%m:%/]% '
+<B><FONT COLOR="#A020F0">set</FONT></B> <B><FONT COLOR="#DA70D6">path</FONT></B> = (/Users/kurokawa/bin /Users/kurokawa/Library/Haskell/bin /opt/local/bin /bin /sbin /usr/bin /usr/sbin /usr/X11/bin)
+
+<B><FONT COLOR="#A020F0">unset</FONT></B> <B><FONT COLOR="#DA70D6">autologout</FONT></B>
+<I><FONT COLOR="#B22222">#unsetenv LANG
+</FONT></I><I><FONT COLOR="#B22222">#setenv LANG C
+</FONT></I><I><FONT COLOR="#B22222">#setenv LANG ja_JP.eucJP
+</FONT></I><B><FONT COLOR="#A020F0">setenv</FONT></B> LANG ja_JP.UTF-8
+<I><FONT COLOR="#B22222">#umask 022
+</FONT></I><B><FONT COLOR="#A020F0">umask</FONT></B> 002
+
+<B><FONT COLOR="#A020F0">limit</FONT></B> coredumpsize 32000
+
+
+<B><FONT COLOR="#A020F0">alias</FONT></B> ls ls -F
+<B><FONT COLOR="#A020F0">alias</FONT></B> ll ls -lF
+<B><FONT COLOR="#A020F0">alias</FONT></B> h <B><FONT COLOR="#A020F0">history</FONT></B> 40
+<B><FONT COLOR="#A020F0">alias</FONT></B> hh <B><FONT COLOR="#A020F0">history</FONT></B>
+<B><FONT COLOR="#A020F0">alias</FONT></B> hexdump hexdump -C
+<B><FONT COLOR="#A020F0">alias</FONT></B> cp-f <B><FONT COLOR="#BC8F8F">&quot;cp -f&quot;</FONT></B>
+<B><FONT COLOR="#A020F0">alias</FONT></B> cp 'cp -i'
+
+<I><FONT COLOR="#B22222">## force LANG C
+</FONT></I><I><FONT COLOR="#B22222">#alias man 'env LANG=C man'
+</FONT></I><I><FONT COLOR="#B22222">#alias make 'env LANG=C make'
+</FONT></I><I><FONT COLOR="#B22222">#alias svn 'env LANG=C svn' # error occurs
+</FONT></I>
+<I><FONT COLOR="#B22222">#alias rxvt rxvt -foreground white -background black -geometry 80x68
+</FONT></I><B><FONT COLOR="#A020F0">alias</FONT></B>	rxvt rxvt -foreground white -background black
+<B><FONT COLOR="#A020F0">alias</FONT></B>	xterm xterm -foreground white -background black
+<B><FONT COLOR="#A020F0">alias</FONT></B>	settitle	'<B><FONT COLOR="#A020F0">echo</FONT></B> -n <B><FONT COLOR="#BC8F8F">&quot;\033]0;$1&quot;</FONT></B>;<B><FONT COLOR="#A020F0">echo</FONT></B> -n <B><FONT COLOR="#BC8F8F">&quot;\007&quot;</FONT></B>'
+<B><FONT COLOR="#A020F0">alias</FONT></B>	path_sed	'<B><FONT COLOR="#A020F0">echo</FONT></B> $PATH | sed <B><FONT COLOR="#BC8F8F">&quot;s/:/\\\
+/g&quot;</FONT></B>'
+<B><FONT COLOR="#A020F0">alias</FONT></B>   mkdircd 'mkdir -p $1; <B><FONT COLOR="#A020F0">cd</FONT></B> $1'
+<I><FONT COLOR="#B22222">#alias	soap    java org.apache.soap.util.net.TcpTunnelGui 49152 localhost 8080
+</FONT></I><B><FONT COLOR="#A020F0">alias</FONT></B>	soap    java org.apache.soap.util.net.TcpTunnelGui
+
+<B><FONT COLOR="#A020F0">alias</FONT></B> rmbak 'rm *~ <I><FONT COLOR="#B22222">#*#'
+</FONT></I><B><FONT COLOR="#A020F0">alias</FONT></B> te emacs -nw
+<B><FONT COLOR="#A020F0">alias</FONT></B> gte gnome-text-editor
+<B><FONT COLOR="#A020F0">alias</FONT></B> bak <B><FONT COLOR="#A020F0">cd</FONT></B> -
+<B><FONT COLOR="#A020F0">alias</FONT></B> back <B><FONT COLOR="#A020F0">cd</FONT></B> -
+<B><FONT COLOR="#A020F0">alias</FONT></B> psall 'ps -aux | grep kurokawa'
+
+<B><FONT COLOR="#A020F0">alias</FONT></B>	bz2	'bzip2 -dc $1 | tar xvf -'
+<B><FONT COLOR="#A020F0">alias</FONT></B>	bz2t	'bzip2 -dc $1 | tar tvf -'
+
+
+<B><FONT COLOR="#A020F0">set</FONT></B> CLIENT_IP=`<B><FONT COLOR="#A020F0">echo</FONT></B> $SSH_CLIENT | awk '{print $1}'`
+<B><FONT COLOR="#A020F0">set</FONT></B> TMP_IP=`<B><FONT COLOR="#A020F0">echo</FONT></B> $CLIENT_IP | awk -F : '{print $1}'`
+<I><FONT COLOR="#B22222">#if ( $TMP_IP==&quot;&quot; ) then
+</FONT></I><I><FONT COLOR="#B22222">#    set CLIENT_IP=`echo $CLIENT_IP | awk -F : '{print $4}'`
+</FONT></I><I><FONT COLOR="#B22222">#else
+</FONT></I><I><FONT COLOR="#B22222">#    set CLIENT_IP=$TMP_IP
+</FONT></I><I><FONT COLOR="#B22222">#endif
+</FONT></I><B><FONT COLOR="#A020F0">setenv</FONT></B> REMOTEHOST $CLIENT_IP
+
+<B><FONT COLOR="#A020F0">setenv</FONT></B> DISPLAY ${REMOTEHOST}:0.0
+<B><FONT COLOR="#A020F0">setenv</FONT></B> EDITOR 'emacs -nw'
+<B><FONT COLOR="#A020F0">setenv</FONT></B> LESS X
+<B><FONT COLOR="#A020F0">setenv</FONT></B>  LD_LIBRARY_PATH /lib:/usr/lib:/usr/local/lib:/<B><FONT COLOR="#DA70D6">home</FONT></B>/kurokawa/lib
+
+<I><FONT COLOR="#B22222">#setenv JAVA_HOME $HOME/java/jdk1.3.1_03
+</FONT></I><I><FONT COLOR="#B22222">#setenv  CLASSPATH .:$HOME/java/jar/activation.jar:$HOME/java/jar/soap.jar:$HOME/java/jar/xerces.jar:$HOME/java/jar/mail.jar:/opt/jar/bsf.jar:$HOME/java/jar/js.jar
+</FONT></I><I><FONT COLOR="#B22222">#set path = ($JAVA_HOME/bin $path)
+</FONT></I>
+<I><FONT COLOR="#B22222">### ccache
+</FONT></I><B><FONT COLOR="#A020F0">setenv</FONT></B> MPATROL_OPTIONS <B><FONT COLOR="#BC8F8F">&quot;LOGALL PROF TRACE&quot;</FONT></B>
+<B><FONT COLOR="#A020F0">setenv</FONT></B> CCACHE ccache
+<B><FONT COLOR="#A020F0">setenv</FONT></B> COMPILER_PREFIX ccache
+<I><FONT COLOR="#B22222">### distcc
+</FONT></I><B><FONT COLOR="#A020F0">setenv</FONT></B> NUM_JOBS <B><FONT COLOR="#BC8F8F">&quot;-j 2&quot;</FONT></B>
+<B><FONT COLOR="#A020F0">setenv</FONT></B> DISTCC_HOSTS localhost
+<B><FONT COLOR="#A020F0">setenv</FONT></B> DISTCC distcc
+<B><FONT COLOR="#A020F0">setenv</FONT></B> CCACHE_PREFIX distcc
+
+<I><FONT COLOR="#B22222">### cppunit-x
+</FONT></I><B><FONT COLOR="#A020F0">setenv</FONT></B> CPPUNIT_DIR $HOME/tool/cppunit-x-20020331-cell/cppunit
+<B><FONT COLOR="#A020F0">setenv</FONT></B> CPPUNIT_DIR_LINUX $HOME/tool/cppunit-x-20020331/cppunit
+
+
+<I><FONT COLOR="#B22222">### for mac ###
+</FONT></I><B><FONT COLOR="#A020F0">alias</FONT></B> emacs /Applications/Emacs.app/Contents/MacOS/Emacs
+<B><FONT COLOR="#A020F0">alias</FONT></B> hsdoc /Library/Haskell/doc/index.html
+<B><FONT COLOR="#A020F0">alias</FONT></B> diffmerge /Applications/DiffMerge.app/Contents/MacOS/DiffMerge
+
+<B><FONT COLOR="#A020F0">source</FONT></B> ~/.tcshrc_complete
+</PRE>
+<HR>
+<ADDRESS>Generated by <A HREF="http://www.iki.fi/~mtr/genscript/">GNU Enscript 1.6.6</A>.</ADDRESS>
+</BODY>
+</HTML>
