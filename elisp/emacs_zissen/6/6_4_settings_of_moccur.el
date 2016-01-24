@@ -8,8 +8,12 @@
   (add-to-list 'dmoccur-exclusion-mask "\\.DS_Store")
   (add-to-list 'dmoccur-exclusion-mask "^#.+#$")
   ;; use Migemo if it is available.
-  (when (and (excutable-find "cmigemo")
+  (when (and (executable-find "cmigemo")
 	     (require 'migemo nil t))
     (setq moccur-use-migemo t))
   ;; load moccur-edit as well.
   (require 'moccur-edit nil t))
+
+
+;; settings of wgrep
+(require 'wgrep nil t)
