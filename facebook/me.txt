@@ -1,0 +1,17 @@
+curl \
+     -F 'access_token=CAAEtBBqnhzoBAHNyzHe6Gv4gT606ZA2xZAf5xtHGGVdhqZAcbOJeLftdvOMSiyHpLLQbPChIbtkPVBWgnZCeloaPL9RGX0hG75g6s8BZBJKBZCwnawvW4Hu9cCFjukulPLqqZBQbKBdKosFmcS332crzGwgvPysPtSzyeQ185ze3ve8YHZAPsyWhAtOnbSCa1wijU7wetYAH6EbacgzbyLSwXhSfzFiPMpMZD' \
+     'https://graph.facebook.com/v2.3/me' \
+     | python -mjson.tool
+
+curl \
+     -F 'access_token=CAAEtBBqnhzoBAOBPtpfpTHMweZCMpBHxk8SAlwipjZBRczG4YTNeWZAZCzo1neZA9xi2deVwPORRjtV7Rw5t5rJXtwLR91xn9u1g6qnZBhDh8d7CU7daBxNAMP5cHWZAHAOCnlZC1TmhhzYwnRPGJAZArIB98EQXD1gNrbIyWLtUKbgLJEszD2HWbnyeFqEwnWZCb13D1cbAHgJ3jOQAxJk3RNi2tZBdAkKcZCAZD' \
+     -F 'batch=[{"method":"POST","relative_url":"me/photos","attached_files":"file1"},{"method":"POST","relative_url":"me/photos","attached_files":"file2"},{"method":"POST","relative_url":"me/photos","attached_files":"file3"},{"method":"POST","relative_url":"me/photos","attached_files":"file4"},{"method":"POST","relative_url":"me/photos","attached_files":"file5"},{"method":"POST","relative_url":"me/photos","attached_files":"file6"},{"method":"POST","relative_url":"me/photos","attached_files":"file7"},{"method":"POST","relative_url":"me/photos","attached_files":"file8"}]' \
+     -F 'file1=@a.jpg' \
+     -F 'file2=@b.jpg' \
+     -F 'file3=@c.jpg' \
+     -F 'file4=@d.jpg' \
+     -F 'file5=@e.jpg' \
+     -F 'file6=@X.jpg' \
+     -F 'file7=@g.jpg' \
+     -F 'file8=@h.jpg' \
+    https://graph.facebook.com
