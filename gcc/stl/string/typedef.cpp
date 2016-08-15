@@ -7,8 +7,8 @@
 
 #if __cplusplus
 namespace xxx {
-	//typedef char* String;
-	#define String char*
+	typedef const char* String;
+	//#define String char*
 #else
 namespace Xxx.Yyy.Updater
 {
@@ -17,16 +17,14 @@ namespace Xxx.Yyy.Updater
 	{
 #endif
 		/// <summary>
-		/// Key name of the np environment.
 		/// </summary>
 #if !__cplusplus
 		public
 #endif
 			const String	UPDATER_ENVIRONMENTx = "np_environment";
-			//const char* UPDATER_ENVIRONMENTx = "environment";
+		// NG:	const const char* cccUPDATER_ENVIRONMENTx = "environment-c";
 
 		/// <summary>
-		/// Key name of the manifest revision for Music Unlimited.
 		/// </summary>
 #if !__cplusplus
 		public
