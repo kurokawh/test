@@ -7,7 +7,8 @@
 
 #if __cplusplus
 namespace xxx {
-	typedef char *String;
+	//typedef char* String;
+	#define String char*
 #else
 namespace Xxx.Yyy.Updater
 {
