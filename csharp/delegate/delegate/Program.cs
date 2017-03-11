@@ -164,10 +164,11 @@ namespace AnotherEventSample
 namespace EventTest {
     public class MyEventArgs : EventArgs
     {
-        public MyEventArgs(int n, String s)
+        public MyEventArgs() { }
+        public virtual void parseJson(object o)
         {
-            this.num = n;
-            this.str = s;
+            this.num = 1;
+            this.str = "base!";
         }
 
         public int num {get; set;}
@@ -175,51 +176,57 @@ namespace EventTest {
     }
     public class SubEventArgs : MyEventArgs
     {
-        public SubEventArgs(int n, String s, double d) :
-            base(n ,s)
+        public override void parseJson(object o)
         {
-            ddd = d;
+            base.parseJson(o);
+            ddd = 2.22;
+            str = "sub!";
         }
         public double ddd { get; set;}
     }
-    public delegate void EventHandler(object sender, MyEventArgs arg);
 
-    public class SuperClass {
+    public class SuperClass<T> 
+        where T : MyEventArgs, new()
+    {
+        public delegate void EventHandler(object sender, T arg);
+
         public event EventHandler handler;
         public void fireEvent() {
-            handler(this, createEventArgs());
+            object json = this;
+            handler(this, createEventArgs(json));
         }
-        protected virtual MyEventArgs createEventArgs()
+        protected virtual T createEventArgs(object o)
         {
-            return new MyEventArgs(1, "super");
+            T arg = new T();
+            arg.parseJson(o);
+            return arg;
         }
     }
-    public class SubClass {
+    public class SubClass : SuperClass<SubEventArgs> 
+    {
 
-        protected virtual MyEventArgs createEventArgs()
-        {
-            return new SubEventArgs(2, "sub", 2.0);
-        }
     }
 
     class MySubscriber
     {
         private void myHandler(object sender, MyEventArgs a)
         {
-            Console.WriteLine("myHnadler" + a.str);
+            Console.WriteLine("myHnadler: " + a.str);
         }
         private void subHandler(object sender, SubEventArgs a)
         {
-            Console.WriteLine("subHnadler" + a.str);
+            Console.WriteLine("subHnadler: " + a.str);
         }
         static public void Test()
         {
             MySubscriber subscriber = new MySubscriber();
-            SuperClass superC = new SuperClass();
-            SubClass subC = new SubClass();
-
+            SuperClass<MyEventArgs> superC = new SuperClass<MyEventArgs>();
             superC.handler += subscriber.myHandler;
-            // superC.handler += subscriber.subHandler; NG
+            superC.fireEvent();
+
+            SubClass subC = new SubClass();
+            subC.handler += subscriber.subHandler;
+            subC.fireEvent();
         }
     }
 }
@@ -234,6 +241,8 @@ namespace Test {
             EventSample2.userProgram.Class1.Test(args);
 
             AnotherEventSample.Program.Test(args);
+
+            EventTest.MySubscriber.Test();
         }
     }
 
