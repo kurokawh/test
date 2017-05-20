@@ -1,2 +1,1 @@
-g++ -std=c++0x operator.cpp
-
+g++ -std=c++0x $1
