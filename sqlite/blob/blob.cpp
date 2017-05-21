@@ -40,71 +40,6 @@ int select_callback(void *p_data, int num_fields, char **p_fields, char **p_col_
   return 0;
 }
 
-int select_bind()
-{
-  sqlite3_stmt *stmt;
-
-  if ( sqlite3_prepare(
-         db, 
-//         "insert into tbl_test values (?,?)",  // stmt
-         "select ?,? from tbl_test",  // stmt
-        -1, // If than zero, then stmt is read up to the first nul terminator
-        &stmt,
-         0  // Pointer to unused portion of stmt
-       )
-       != SQLITE_OK) {
-    printf("\nCould not prepare statement.");
-    return 1;
-  }
-
-  printf("\nThe statement has %d wildcards\n", sqlite3_bind_parameter_count(stmt));
-
-  if (sqlite3_bind_text(
-        stmt,
-        1,  // Index of wildcard
-        "f_text",
-		3,
-		NULL
-        )
-      != SQLITE_OK) {
-    printf("\nCould not bind double.\n");
-    return 1;
-  }
-
-  if (sqlite3_bind_text(
-        stmt,
-        2,  // Index of wildcard
-        "f_blob",
-		3,
-		NULL
-        )
-      != SQLITE_OK) {
-    printf("\nCould not bind int.\n");
-    return 1;
-  }
-
-  int   ret;
-#if 1
-  ret =sqlite3_step(stmt);
-  if (ret != SQLITE_OK) {
-	  printf("\nCould not step (execute) stmt: %d\n", ret);
-  } else {
-	  printf("step OK\n");
-  }
-#else
-  char *errmsg;
-  int   nrecs = 0;
-  first_row = 1;
-  ret = sqlite3_exec(db, stmt, select_callback, &nrecs, &errmsg);
-  if(ret!=SQLITE_OK) {
-    printf("Error in select statement %s [%s].\n", stmt, errmsg);
-  }
-  else {
-    printf("\n   %d records returned.\n", nrecs);
-  }
-#endif
-  return 0;
-}
 
 void select_stmt(const char* stmt) {
   char *errmsg;
@@ -140,12 +75,11 @@ struct InsertData {
 	const void* val2; // blob
 	int val2Len;
 };
-
-char bin[] = {0x00, 0x01, 0x02, 0x03};
+char BIN0123[] = {0x00, 0x01, 0x02, 0x03};
 InsertData DATA_ARRAY[] = {
 	{"f_blob", 6, "f\0blob", 7},
 	{"blob_data", 9, "blob\0data", 10},
-	{"0123", 4, bin, 4},
+	{"0123", 4, BIN0123, 4},  // rowid:3
 };
 #define DATA_NUM (sizeof(DATA_ARRAY)/sizeof(InsertData))
 
@@ -165,7 +99,7 @@ int insert_stmt()
     return 1;
   }
 
-  printf("\nThe statement has %d wildcards\n", sqlite3_bind_parameter_count(stmt));
+//  printf("\nThe statement has %d wildcards\n", sqlite3_bind_parameter_count(stmt));
 
   for (int i = 0; i < DATA_NUM; i++) {
 
@@ -202,6 +136,66 @@ int insert_stmt()
   return 0;
 }
 
+
+int select_bind()
+{
+  sqlite3_stmt *stmt;
+
+  if ( sqlite3_prepare(
+         db, 
+//         "select rowid, f_text, hex(f_blob), hex(?) from tbl_test",
+         "select rowid, f_text, hex(f_blob) from tbl_test where hex(f_blob) like \"%\"||hex(?)||\"%\" ",  // stmt
+        -1, // If than zero, then stmt is read up to the first nul terminator
+        &stmt,
+         0  // Pointer to unused portion of stmt
+       )
+       != SQLITE_OK) {
+    printf("\nCould not prepare statement.");
+    return 1;
+  }
+
+  printf("\nThe statement has %d wildcards\n", sqlite3_bind_parameter_count(stmt));
+
+  if (sqlite3_bind_blob(
+        stmt,
+        1,  // Index of wildcard
+        BIN0123,
+		4,
+		NULL
+        )
+      != SQLITE_OK) {
+    printf("\nCould not bind double.\n");
+    return 1;
+  }
+
+  int ret = SQLITE_ROW;
+  int count = 0;
+#if 1
+  while ((ret = sqlite3_step(stmt)) == SQLITE_ROW) {
+	  int  id = sqlite3_column_int(stmt, 0);
+	  printf("count: %d, rowid: %d\n", count, id);
+	  count++;
+  }
+  if (ret != SQLITE_OK) {
+	  printf("\nCould not step (execute) stmt: %d\n", ret);
+  } else {
+	  printf("step OK\n");
+  }
+#else
+  char *errmsg;
+  int   nrecs = 0;
+  first_row = 1;
+  ret = sqlite3_exec(db, stmt, select_callback, &nrecs, &errmsg);
+  if(ret!=SQLITE_OK) {
+    printf("Error in select statement %s [%s].\n", stmt, errmsg);
+  }
+  else {
+    printf("\n   %d records returned.\n", nrecs);
+  }
+#endif
+  return 0;
+}
+
 int main() {
   sqlite3_open("./blob_test.db", &db);
 
@@ -213,10 +207,10 @@ int main() {
   sql_stmt("create table tbl_test (f_text TEXT, f_blob BLOB)");
 
   insert_stmt();
-  select_stmt("select rowid, f_text, hex(f_blob) from tbl_test");
+//  select_stmt("select rowid, f_text, hex(f_blob) from tbl_test");
 
   printf("\n");
-//  select_bind();
+  select_bind();
 
   sqlite3_close(db);
   return 0;
@@ -226,6 +220,10 @@ int main() {
 // 
 // >select rowid, hex(f_blob) from tbl_test where hex(f_blob) like "%00%";
 // returns record which has '\0' in blob field.
+// NOTE: hex() can be used to generate hexdecimal string in like clause".
+//   >select rowid, hex(f_blob) from tbl_test where hex(f_blob) like "%"||hex(?)||"%";
+//
 //
 // >select rowid, hex(f_blob) from tbl_test where f_blob like "%blob%";
 // only "blob\0data" hits.
+//
