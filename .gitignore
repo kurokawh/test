@@ -5,3 +5,4 @@ a.exe
 Debug
 Release
 *.sdf
+*.suo
