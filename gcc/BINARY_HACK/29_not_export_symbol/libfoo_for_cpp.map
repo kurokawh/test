@@ -1,0 +1,8 @@
+{
+	global:
+		extern "C++" {
+		       some_class::some_func;
+		       foo;
+		};
+	local: *;
+};
