@@ -1,13 +1,13 @@
 #include <stdio.h>
 
-void test2()
+int test2()
 {
 	int i = 0;
 	printf("test2()\n");
 	return i;
 }
 
-void test1()
+int test1()
 {
 	int i = 0;
 	printf("test1()\n");
