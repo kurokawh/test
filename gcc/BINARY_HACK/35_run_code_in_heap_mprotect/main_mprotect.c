@@ -2,7 +2,7 @@
 #include <stdlib.h> // malloc
 #include <string.h> // memcpy
 
-#include <unistd.h>
+#include <unistd.h>   // _SC_PAGESIZE
 #include <sys/mman.h> // mprotect
 
 double func()
