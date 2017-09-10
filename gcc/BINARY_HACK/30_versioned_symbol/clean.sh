@@ -1,4 +1,4 @@
+rm *~
 rm *.o
 rm libmax.so*
-rm vertest1
-
+rm vertest1 vertest2
