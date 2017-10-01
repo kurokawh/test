@@ -37,6 +37,6 @@ int main(int argc, char** argv)
 	non_atomic_example();
     end = std::chrono::system_clock::now();
     elapsed_seconds = end-start;
-	std::cout << "atomic_example() elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
+	std::cout << "non_atomic_example() elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
 	return 0;
 }
