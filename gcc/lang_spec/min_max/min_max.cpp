@@ -39,7 +39,15 @@ int main(int argc, char** argv)
 	printf("printf: DBL_MAX * 10: %lf\n", DBL_MAX * 10);
 	printf("printf: DBL_MAX + 1: %lf\n", DBL_MAX + 1);
 	dbl = log(0);
+	printf("printf: log(0): %lf\n", dbl); // -inf
 	printf("printf: log(0)/log(0): %lf\n", dbl/dbl);
+
+	printf("isnan(nan): %d\n", isnan(dbl/dbl));
+	printf("isnan(inf): %d\n", isnan(DBL_MAX * 10));
+
+	printf("isinf(nan): %d\n", isinf(dbl/dbl));
+	printf("isinf(inf): %d\n", isinf(DBL_MAX * 10));
+	printf("isinf(-inf): %d\n", isinf(dbl));
 	return 0;
 }
 
