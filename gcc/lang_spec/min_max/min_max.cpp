@@ -1,5 +1,6 @@
 #include <iostream>
-//#include <cstdint>
+#include <stdio.h>
+
 #include <stdint.h> // INT MIN/MAX
 #include <ieeefp.h> // DBL/FLT 
 
@@ -34,6 +35,11 @@ int main(int argc, char** argv)
 //	dbl = 0/0; // core dump (0 div error)
 //	std::cout << "0/0: "  << dbl  << std::endl;
 
+	printf("printf: DBL_MAX: %lf\n", DBL_MAX);
+	printf("printf: DBL_MAX * 10: %lf\n", DBL_MAX * 10);
+	printf("printf: DBL_MAX + 1: %lf\n", DBL_MAX + 1);
+	dbl = log(0);
+	printf("printf: log(0)/log(0): %lf\n", dbl/dbl);
 	return 0;
 }
 
