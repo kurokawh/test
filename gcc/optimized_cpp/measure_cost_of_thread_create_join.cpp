@@ -3,6 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include <vector>
+#include <future> // async
 
 #define NUM 1000
 
@@ -34,6 +35,17 @@ void create_detach()
 	}
 }
 
+void async()
+{
+//	std::thread t;
+	std::vector<std::thread> tv;
+	tv.reserve(1000);
+
+	for (int i = 0; i < NUM; i++ ) {
+		std::async(std::launch::async, []() {return;});
+	}
+}
+
 int main(int argc, char** argv)
 {
     std::chrono::time_point<std::chrono::system_clock> start, end;
@@ -49,5 +61,11 @@ int main(int argc, char** argv)
     end = std::chrono::system_clock::now();
     elapsed_seconds = end-start;
 	std::cout << "create_detach() elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
+
+    start = std::chrono::system_clock::now();
+	async();
+    end = std::chrono::system_clock::now();
+    elapsed_seconds = end-start;
+	std::cout << "async() elapsed time: " << elapsed_seconds.count() << "s" << std::endl;
 	return 0;
 }
