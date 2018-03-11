@@ -2,6 +2,8 @@ a.out*
 *~
 \#*#
 a.exe
+.vs
+obj
 Debug
 Release
 *.sdf
