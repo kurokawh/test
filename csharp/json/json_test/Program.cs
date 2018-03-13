@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace json_test
+namespace json
 {
     class Program
     {
+        [JsonObject]
         class Item
         {
             public int id = -1;
@@ -20,7 +27,7 @@ namespace json_test
             JObject jobj = new JObject()
                     {
                         { "id", id },
-                        { "item", item },
+                        { "item", JToken.FromObject(item) },
                     };
             Console.WriteLine("jobj: " + jobj.ToString());
         }
