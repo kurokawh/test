@@ -17,9 +17,10 @@ namespace json
     class Program
     {
         [JsonObject]
-        class Item
+        class Test
         {
             public int id = -1;
+            [JsonProperty("xxx")]
             public string name = "no-name";
         };
 
@@ -27,14 +28,17 @@ namespace json
         {
             Console.WriteLine("Hello World!");
             int id = 111;
-            Item item = new Item();
+            Test test = new Test();
+            Config config = new Config();
 
             JObject jobj = new JObject()
                     {
                         { "id", id },
-                        { "item", JToken.FromObject(item) },
+                        { "test", JToken.FromObject(test) },
+                        { "config", JToken.FromObject(config) },
                     };
             Console.WriteLine("jobj: " + jobj.ToString());
+            Console.WriteLine("done");
         }
     }
 }
