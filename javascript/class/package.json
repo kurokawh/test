@@ -1,0 +1,9 @@
+{
+  "name": "class-test",
+  "version": "0.0.0",
+  "description": "ClassTest",
+  "main": "app.js",
+  "author": {
+    "name": "Hiroyuki"
+  }
+}
