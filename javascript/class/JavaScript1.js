@@ -14,6 +14,13 @@ class Animal {
     walk() {
         console.log(this.name + 'が歩いてます');
     }
+
+    static staticFunc() {
+        console.log('Animal.staticFunc() is called');
+    }
+    static type() {
+        return 'Animal';
+    }
 }
 
 
@@ -35,6 +42,10 @@ class Cat extends Animal {
     walk() {
         super.walk(); // Animalクラスのwalkメソッド呼び出し
         console.log('忍び足です');
+    }
+
+    static type() {
+        return 'Cat';
     }
 }
 
