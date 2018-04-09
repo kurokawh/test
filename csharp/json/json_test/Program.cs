@@ -24,9 +24,8 @@ namespace json
             public string name = "no-name";
         };
 
-        static void Main(string[] args)
+        static void testSerializeClasses()
         {
-            Console.WriteLine("Hello World!");
             int id = 111;
             Test test = new Test();
             Config config = new Config();
@@ -39,6 +38,37 @@ namespace json
                     };
             Console.WriteLine("jobj: " + jobj.ToString());
             Console.WriteLine("done");
+
+        }
+
+
+        // https://stackoverflow.com/questions/7814247/serialize-nan-values-into-json-as-nulls-in-json-net?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        static void testSerializeDouble()
+        {
+            string json;
+            IList<double> d = new List<double> { 1.1, double.NaN, double.PositiveInfinity };
+
+            json = JsonConvert.SerializeObject(d);
+            Console.WriteLine(json);
+
+            // [1.1,"NaN","Infinity"]
+
+            json = JsonConvert.SerializeObject(d, new JsonSerializerSettings { FloatFormatHandling = FloatFormatHandling.Symbol });
+            Console.WriteLine(json);
+
+            // [1.1,NaN,Infinity]
+
+            json = JsonConvert.SerializeObject(d, new JsonSerializerSettings { FloatFormatHandling = FloatFormatHandling.DefaultValue });
+            Console.WriteLine(json);
+
+            // [1.1,0.0,0.0]
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello World!");
+            testSerializeClasses();
+            testSerializeDouble();
         }
     }
 }
