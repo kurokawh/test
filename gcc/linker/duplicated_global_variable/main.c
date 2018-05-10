@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-void bar();
 void foo();
+void bar();
+void bar2();
 
 
 extern int val;
@@ -12,9 +13,12 @@ int main(int argc, char** argv)
 {
 	printf("in main() val: %d\n", val);
 
-	printf("call foo()\n");
+	printf(__FILE__ " call foo()\n");
 	foo();
-	printf("ret  foo()\n");
+	printf(__FILE__ " ret  foo()\n");
+	printf(__FILE__ " call bar2()\n");
+	bar2();
+	printf(__FILE__ " ret  bar2()\n");
 	return 0;
 }
 
