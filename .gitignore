@@ -11,4 +11,5 @@ Release
 *test.db
 *.so
 *.o
+*.a
 *.stackdump
