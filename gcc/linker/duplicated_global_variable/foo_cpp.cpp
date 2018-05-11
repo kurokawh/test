@@ -11,7 +11,9 @@ extern "C" void foo()
 {
 	printf(__FILE__ " in foo() val: %d\n", val);
 	bar2();
+#ifdef REFER_A
 	test();
+#endif // REFER_A
 }
 
 class A {
@@ -23,6 +25,8 @@ public:
 
 A a;
 
+#ifdef REFER_A
 void test() {
 	printf(__FILE__ " in test() a: %p\n", &a);
 }
+#endif // REFER_A

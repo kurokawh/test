@@ -19,9 +19,9 @@ echo OK
 gcc main.o -L. -lfoo -lbar -lbar2 -lbar_val
 echo OK2
 
-# OK: 
+# NOTE: global constructor does not run if object file is not stored.
 gcc main.o -L. -lfoo -lfoo_cpp -lbar -lbar2
-echo OK3-1 #A is NOT constructed
+echo OK3-1 #A is NOT constructed because foo_cpp.o is not stored.
 gcc main.o -L. -lfoo_cpp -lfoo -lbar -lbar2
 echo OK3-2 #A is constructed
 
