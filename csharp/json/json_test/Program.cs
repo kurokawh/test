@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Converters; // StringEnumConverter
+
 
 // <<memo to build>>
 // create git repository under $HOME/tool directory and build dll in it.
@@ -24,6 +26,20 @@ namespace json
             public string name = "no-name";
         };
 
+		enum Type
+		{
+			None,
+			Test,
+			Test2,
+			Test3,
+		};
+		[JsonObject]
+		struct MetaClass
+		{
+			[JsonConverter(typeof(StringEnumConverter))]
+			public Type type;
+			public JToken jtoken;
+		}
         static void testSerializeClasses()
         {
             int id = 111;
@@ -37,10 +53,42 @@ namespace json
                         { "config", JToken.FromObject(config) },
                     };
             Console.WriteLine("jobj: " + jobj.ToString());
-            Console.WriteLine("done");
 
+
+
+			MetaClass meta = new MetaClass();
+			meta.type = Type.Test;
+			meta.jtoken = JToken.FromObject(test);
+			Console.WriteLine("meta: " + JsonConvert.SerializeObject(meta));
+			Console.WriteLine("done");
         }
 
+		static void showInputAndResult(string input, Test test)
+		{
+			Console.WriteLine("== result ==");
+			Console.WriteLine("\tinput: " + input);
+			Console.WriteLine("\ttest: " + test);
+			Console.WriteLine("\tserialize: " + JsonConvert.SerializeObject(test));
+		}
+        static void testDeserializeClasses()
+        {
+			string input = null;
+			Test test = new Test();
+
+			input = "";
+			test = JsonConvert.DeserializeObject<Test>(input);
+			showInputAndResult(input, test);
+
+			input = "{\"id\": -1, \"xxx\": \"no-name\" }";
+			test = JsonConvert.DeserializeObject<Test>(input);
+			showInputAndResult(input, test);
+
+			// meta
+			input = "{\"type\": \"Test\",\"jtoken\":{\"id\":2,\"xxx\":\"with-name\"}}";
+			MetaClass meta = JsonConvert.DeserializeObject<MetaClass>(input);
+			test = meta.jtoken.ToObject<Test>();
+			Console.WriteLine("done");
+        }
 
         // https://stackoverflow.com/questions/7814247/serialize-nan-values-into-json-as-nulls-in-json-net?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
         static void testSerializeDouble()
@@ -69,6 +117,7 @@ namespace json
             Console.WriteLine("Hello World!");
             testSerializeClasses();
             testSerializeDouble();
+            testDeserializeClasses();
         }
     }
 }
