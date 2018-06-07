@@ -21,9 +21,9 @@ namespace json
         [JsonObject]
         class Test
         {
-            public int id = -1;
+            public int id = 0;
             [JsonProperty("xxx")]
-            public string name = "no-name";
+            public string name = null;
         };
 
 		enum Type
@@ -54,6 +54,9 @@ namespace json
                     };
             Console.WriteLine("jobj: " + jobj.ToString());
 
+			test.id = -1;
+			test.name = "no-name";
+			Console.WriteLine("test: " + JsonConvert.SerializeObject(test));
 
 
 			MetaClass meta = new MetaClass();
@@ -75,15 +78,30 @@ namespace json
 			string input = null;
 			Test test = new Test();
 
+			// "" => null
 			input = "";
 			test = JsonConvert.DeserializeObject<Test>(input);
 			showInputAndResult(input, test);
 
+			// normal: OK
 			input = "{\"id\": -1, \"xxx\": \"no-name\" }";
 			test = JsonConvert.DeserializeObject<Test>(input);
 			showInputAndResult(input, test);
 
-			// meta
+			// missing element: OK (initial value)
+			input = "{ \"id\": 100 }";
+			test = JsonConvert.DeserializeObject<Test>(input);
+			showInputAndResult(input, test);
+			input = "{ \"xxx\": \"name2\" }";
+			test = JsonConvert.DeserializeObject<Test>(input);
+			showInputAndResult(input, test);
+
+			// additional element: OK (ignored)
+			input = "{\"unknownKey\": \"OK?\", \"id\": -1, \"xxx\": \"no-name\" }";
+			test = JsonConvert.DeserializeObject<Test>(input);
+			showInputAndResult(input, test);
+
+			// meta: OK
 			input = "{\"type\": \"Test\",\"jtoken\":{\"id\":2,\"xxx\":\"with-name\"}}";
 			MetaClass meta = JsonConvert.DeserializeObject<MetaClass>(input);
 			test = meta.jtoken.ToObject<Test>();
