@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 
-namespace json
+namespace json_test
 {
 	public class ConfigMin
 	{

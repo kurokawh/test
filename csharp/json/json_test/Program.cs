@@ -14,7 +14,7 @@ using Newtonsoft.Json.Converters; // StringEnumConverter
 // % cd ~/tool
 // % git clone git@github.com:JamesNK/Newtonsoft.Json.git
 
-namespace json
+namespace json_test
 {
     class Program
     {
@@ -133,6 +133,8 @@ namespace json
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+			RecordUtil.Test();
+
             testSerializeClasses();
             testSerializeDouble();
             testDeserializeClasses();
