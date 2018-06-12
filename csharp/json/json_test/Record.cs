@@ -12,11 +12,75 @@ namespace json_test
 	{
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-			writer.WriteValue(((bool)value) ? 1 : 0);
+//			Type t = value.GetType();
+			bool boolValue = false;
+			if (value is bool)
+			{
+				boolValue = (bool)value;
+			}
+			else if (value is int)
+			{
+				int intValue = (int)value;
+				boolValue = intValue != 0;
+			}
+			else if (value is uint)
+			{
+				boolValue = (uint)value != 0;
+			}
+			else if (value is long)
+			{
+				boolValue = (long)value != 0;
+			}
+			else if (value is ulong)
+			{
+				boolValue = (ulong)value != 0;
+			}
+			else if (value is string)
+			{
+				string strValue = (string)value;
+				boolValue = strValue.ToLower() == "true";
+			}
+			writer.WriteValue(boolValue);
 		}
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
-			return reader.Value.ToString() == "1";
+			return serializer.Deserialize(reader, objectType);
+#if XXX
+			int intValue = 0;
+			if (value is bool)
+			{
+				bool boolValue = (bool)value;
+				if (boolValue)
+				{
+					intValue = 1;
+				}
+				else
+				{
+					intValue = 0;
+				}
+			}
+			else if (value is int)
+			{
+				int intValue = (int)value;
+			}
+			else if (value is string)
+			{
+				string strValue = (string)value;
+				if (strValue.ToLower() == "true")
+				{
+					intValue = 1;
+				}
+				else if (strValue.ToLower() == "false")
+				{
+					intValue = 0;
+				}
+				else
+				{
+					Int32.TryParse(strValue, out intValue);
+				}
+			}
+			return intValue;
+#endif
 		}
 		public override bool CanConvert(Type objectType)
 		{
@@ -58,7 +122,13 @@ namespace json_test
 		public bool flagConvertedToBool;
 
 		[JsonConverter(typeof(BoolConverter))]
-		public UInt32 flagIntC;
+		public Int32 flagIntC;
+		[JsonConverter(typeof(BoolConverter))]
+		public UInt32 flagUintC;
+		[JsonConverter(typeof(BoolConverter))]
+		public Int64 flagLongC;
+		[JsonConverter(typeof(BoolConverter))]
+		public UInt64 flagUlongC;
 		public bool flagBoolC;
 
 		[MarshalAs(UnmanagedType.LPStr)]
@@ -102,6 +172,14 @@ namespace json_test
 			param.Record = JToken.FromObject(rec);
 			Console.WriteLine("param: " + JsonConvert.SerializeObject(param));
 
+			rec.flagLongC = 1;
+			rec.flagUlongC = 1;
+			rec.flagIntC = 1;
+			rec.flagUintC = 1;
+			param.Record = JToken.FromObject(rec);
+			Console.WriteLine("param-1: " + JsonConvert.SerializeObject(param));
+
+
 			//JObject jobj = new JObject(param); // XXX exception
 			JObject jobj = JObject.FromObject(param);
 			Console.WriteLine("jobj: " + jobj.ToString());
@@ -117,7 +195,32 @@ namespace json_test
 					'flagBool':true,
 					'flagConvertedFromBool':true,
 					'flagConvertedToBool':1,
+					'flagIntC':0,
+					'flagUintC':false,
+					'flagLongC':0,
+					'flagUlongC':false,
+					'flagBoolC':true,
+					'data':null,
+				},
+				}";
+			param = JsonConvert.DeserializeObject<MetaRecord>(input);
+			rec = param.Record.ToObject<Record>();
+
+			input = @"
+				{'recordType':'disc',
+				 'condition':'IfNotExist',
+				 'record':{
+					'id':0,
+					'message':null,
+					'subject':null,
+					'flagInt':1,
+					'flagBool':true,
+					'flagConvertedFromBool':true,
+					'flagConvertedToBool':1,
 					'flagIntC':1,
+					'flagUintC':true,
+					'flagLongC':1,
+					'flagUlongC':true,
 					'flagBoolC':true,
 					'data':null,
 				},
