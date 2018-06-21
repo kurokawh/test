@@ -1,4 +1,5 @@
 
+#include "template.h"
 #include "data.h"
 
 namespace test {

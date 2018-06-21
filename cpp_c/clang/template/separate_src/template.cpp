@@ -33,7 +33,9 @@ namespace test {
 	template<typename ID>
 	Data* GenericContainer<ID>::GetData(ID id)
 	{
-		return new Data(1);
+		Data* d = new Data(1);
+		d->m_value = 2;
+		return d;
 	}
 
 

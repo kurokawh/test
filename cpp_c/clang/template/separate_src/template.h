@@ -17,7 +17,8 @@ namespace test
 	template<typename ID>
 	class GenericContainer
 	{
-//		friend class Data;
+//		friend class Data; // XXX
+		friend class GenericData<int64_t>;
 
 	public:
 		typedef std::vector<ID> IDList;

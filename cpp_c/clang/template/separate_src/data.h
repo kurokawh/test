@@ -12,6 +12,7 @@ namespace test
 	template<typename ID>
 	class GenericData
 	{
+		friend class GenericContainer<ID>;
 
 	public:
 		GenericData(ID val);
