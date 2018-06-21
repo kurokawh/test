@@ -9,12 +9,12 @@ namespace test {
 		ID x;
 		m_idlist.push_back(x);
 	}
-/*
+
 	template<typename ID>
-	GenericContainer<ID>::GenericContainer(const IDList::allocator_type& al)
+	GenericContainer<ID>::GenericContainer(const typename IDList::allocator_type& al)
 	{
 	}
-*/
+
 	template<typename ID>
 	GenericContainer<ID>::~GenericContainer() 
 	{

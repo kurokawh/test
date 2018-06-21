@@ -25,7 +25,8 @@ namespace test
 		typedef std::vector<ID> IDList;
 
 		GenericContainer();
-//		GenericContainer(const IDList::allocator_type& al);
+		// https://stackoverflow.com/questions/8246117/compiling-error-on-template-method-return-is-instance-from-inner-class
+		GenericContainer(const typename IDList::allocator_type& al); // 'typname' keyword is needed.
 		virtual ~GenericContainer();
 		ID GetId(int32_t index);
 		Data* GetData(ID id);
