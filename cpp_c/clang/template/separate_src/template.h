@@ -6,10 +6,14 @@
 #include <string>
 #include <stdint.h>
 
-#include "data.h"
 
 namespace test
 {
+	// XXX
+	template<typename ID>
+	class GenericData;
+	typedef GenericData<int64_t> Data;
+
 	template<typename ID>
 	class GenericContainer
 	{

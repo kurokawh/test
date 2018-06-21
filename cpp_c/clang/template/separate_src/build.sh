@@ -1,1 +1,1 @@
-clang++ -std=c++11 $@
+clang++ -Wall -std=c++11 $@

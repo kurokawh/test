@@ -1,6 +1,6 @@
 
-//#include <algorithm>
 #include "template.h"
+#include "data.h"
 
 namespace test {
 	template<typename ID>
@@ -11,7 +11,7 @@ namespace test {
 	}
 /*
 	template<typename ID>
-	TContainer<ID>::TContainer(const IDList::allocator_type& al): m_rowid_idx(-1), m_idlist(al)
+	GenericContainer<ID>::GenericContainer(const IDList::allocator_type& al)
 	{
 	}
 */
@@ -33,7 +33,7 @@ namespace test {
 	template<typename ID>
 	Data* GenericContainer<ID>::GetData(ID id)
 	{
-		return nullptr;
+		return new Data(1);
 	}
 
 
