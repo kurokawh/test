@@ -18,7 +18,8 @@ namespace test
 	class GenericContainer
 	{
 //		friend class Data; // XXX
-		friend class GenericData<int64_t>;
+//		friend class GenericData<int64_t>; // NG for string ID.
+		friend class GenericData<ID>;
 
 	public:
 		typedef std::vector<ID> IDList;

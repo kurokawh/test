@@ -40,5 +40,5 @@ namespace test {
 
 
 	template class GenericContainer<int64_t>;
-//	template class GenericContainer<std::string>;
+	template class GenericContainer<std::string>;
 }

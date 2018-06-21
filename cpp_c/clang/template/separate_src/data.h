@@ -13,6 +13,7 @@ namespace test
 	class GenericData
 	{
 		friend class GenericContainer<ID>;
+		friend class GenericContainer<std::string>; // needed so that GenericContainer<string> access to Data (GenericData<int64_t>).
 
 	public:
 		GenericData(ID val);
