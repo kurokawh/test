@@ -23,8 +23,20 @@ namespace test
 		ID m_value;
 
 	};
-
 	typedef GenericData<int64_t> Data;
+
+
+	template<typename ID>
+	class GenericSubData : public GenericData<ID>
+	{
+	public:
+		GenericSubData(ID val);
+		virtual ~GenericSubData();
+
+	private:
+		std::vector<ID> m_vec;
+
+	};
 }
 
 #endif  //_DATA_H
