@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <string.h> // strerror()
 
 int main(int argc, const char* argv[])
 {
@@ -9,7 +10,9 @@ int main(int argc, const char* argv[])
     std::string str;
     if (ifs.fail())
     {
-        std::cerr << "失敗" << std::endl;
+		int err = errno;
+        std::cerr << "error: " << err << std::endl;
+        std::cerr << "strerror: " << strerror(err) << std::endl;
         return -1;
     }
     while (getline(ifs, str))
