@@ -10,12 +10,15 @@ void f(typename T::foo) // 定義#1
 	printf("void f(typename T::foo)\n");
 }
 
+// error occurs if this template def is commented out.
 template <typename T> 
 void f(T)               // 定義#2
 {
 	printf("void f(T)\n");
 }
 
+
+// SFINAE: Substitution failure is not an error
 // https://ja.wikipedia.org/wiki/SFINAE
 int main(int argc, char** argv)
 {
