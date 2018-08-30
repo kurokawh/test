@@ -22,7 +22,7 @@ void B::test(A& arg)
 }
 void B::testNg(A& arg)
 {
-//	b = arg->a; // NG: this func can NOT refer private member of A.
+//	b = arg.a; // NG: this func can NOT refer private member of A.
 }
 
 int main(int argc, char** argv)
