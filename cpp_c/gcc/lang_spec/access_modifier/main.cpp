@@ -9,7 +9,7 @@ class A {
 class B {
 	int b;
 	void test(A& arg) {
-		b = arg.a
+		b = arg.a;
 	}
 };
 int main(int argc, char** argv)
@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 	A aa;
 	B bb;
 	bb.test(aa);
-	printf("val: %d\n", -ex);
+//	printf("val: %d\n", -ex);
 	return 0;
 }
 
