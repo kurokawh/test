@@ -29,7 +29,8 @@ namespace mine {
 int main(int argc, char** argv)
 {
 	original::OrgEnum oe = original::ENUM_A;
-	mine::MyEnum me;
+	oe = original::OrgEnum::ENUM_A;
+	mine::MyEnum me = oe; // OK
 
 	original::test(oe);
 	original::test(me);
