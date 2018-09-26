@@ -6,13 +6,12 @@
 
 set x = 1
 
-# Is environment variable defined?
+### Is environment variable defined? ###
 if ( $?x ) then
 	echo "env x defined"
 else
 	echo "env x not defined"
 endif
-
 if ( $?y ) then
 	echo "env y defined"
 else
@@ -26,16 +25,27 @@ if ( $?x ) then
 else
 	echo "env x not defined"
 endif
-
 if ( $?y ) then
 	echo "env y defined"
 else
 	echo "env y not defined"
 endif
+# if NOT
+if ( ! $?x ) then
+	echo 'if ( ! $?x ) true: not defined'
+else
+	echo 'if ( ! $?x ) false: defined'
+endif
+if ( ! $?y ) then
+	echo 'if ( ! $?y ) true: not defined'
+else
+	echo 'if ( ! $?y ) false: defined'
+endif
+
 
 
 set x = 1
-# string & number is not distinguished
+### string & number is not distinguished ###
 if ( $x == 1 ) then
     echo "x is 1"
 else
