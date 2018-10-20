@@ -36,7 +36,7 @@ p User.all
 
 # my test code ===>
 u2 = User.new({name: 'abc'})
-u2.name = 'abc2'
+u2.name = 'abc2' # name can be referred & changed before storing to DB.
 p u2.name
 u2.save
 
@@ -44,10 +44,16 @@ p User.all
 
 p u2
 p u2.name
-u2.name = 'xyg'
+u2.name = 'xyg' # name can be changed after storing to DB.
 u2.save
 p User.all
 
+
+u3 = User.all.first(1)[0]
+p u3
+u3.name = 'new-name' # replace name on memory
+u3.save
+p User.all
 # <===
 
 
@@ -58,6 +64,9 @@ p User.all
 # % gem install sqlite3
 # % gem install bigdecimal
 # % gem install json
+#
+# note:
+#   ruby-devel package is required to gem install sqlite3
 #
 # refer:
 #   https://qiita.com/xkumiyu/items/2ecee242b7e6e6c6d9a1
