@@ -101,3 +101,27 @@ int main(int argc, char** argv)
 	std::cout << "float1.6: " << FF.GetValue(vals[2]) << std::endl;
 	return 0;
 }
+
+
+// list of field declaration test.
+Field* flds[] = {
+	&IF,
+	&TF,
+	&FF,
+};
+Field* fldnews[] = {
+	new IntField<int>("ii"),
+	new TextField<std::string>("ttt"),
+};
+IntField<int> ifs[] = {IntField<int>("i1"), IntField<int>("i2")};
+/* NG
+Field& fldrefs[] = {
+	IF,
+	TF,
+	FF,
+};
+Field& ng[] = {
+	IntField<int>("ii"),
+	TextField<std::string>("ttt"),
+};
+*/
