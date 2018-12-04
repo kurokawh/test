@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <assert.h>
 
 
 enum ValueType {
@@ -44,47 +45,59 @@ public:
 };
 
 template <class T>
-class TypedField : public Field {
+class IntField : public Field {
 public:
-	TypedField(const std::string name, const ValueType type) : 
-		Field(name, type) {};
-	virtual ~TypedField() {}
+	IntField(const std::string name) : 
+		Field(name, ValueType_Int) {};
+	virtual ~IntField() {}
 	const T GetValue(const Value& val) const {
-		if (m_type != val.type) {
-			return E_TPYE_MISMATCH;
-		}
-		switch (val.type) {
-		case ValueType_Int:
-			return static_cast<T>(val.v_int);
-		case ValueType_Float:
-			return static_cast<T>(val.v_float);
-		case ValueType_Text:
-			return static_cast<T>(val.v_text);
-		case ValueType_Blob:
-			return static_cast<T>(val.v_blob);
-		case ValueType_None: // through
-		case ValueType_Null: // through
-		default:
-			// err
-			break;
-		}
-		return E_INVALID_VALUE;
+		assert(m_type == val.type);
+		return static_cast<T>(val.v_int);
+	}
+};
+template <class T>
+class FloatField : public Field {
+public:
+	FloatField(const std::string name) : 
+		Field(name, ValueType_Float) {};
+	virtual ~FloatField() {}
+	const T GetValue(const Value& val) const {
+		assert(m_type == val.type);
+		return static_cast<T>(val.v_float);
+	}
+};
+template <class T>
+class TextField : public Field {
+public:
+	TextField(const std::string name) : 
+		Field(name, ValueType_Text) {};
+	virtual ~TextField() {}
+	const T GetValue(const Value& val) const {
+		assert(m_type == val.type);
+		return static_cast<T>(val.v_text);
 	}
 };
 
 Field F1("aaa", ValueType_Int);
-TypedField<int> CF1("ccc", ValueType_Int);
+IntField<int> IF("ii");
+TextField<std::string> TF("ttt");
+FloatField<double> FF("ffff");
 
-const Value vals[] = {
+Value vals[] = {
 	{ValueType_Int, "name-int", sizeof(int64_t), 123},
 	{ValueType_Text, "name-text", 3, (int64_t)"xyg"},
-	{ValueType_Float, "name-float", sizeof(float), 0.1},
+	{ValueType_Float, "name-float", sizeof(double), static_cast<double>(1.5)}, // XX: val is shown as 5.94064-324 not 1.5.
 };
  
 int main(int argc, char** argv)
 {
 	std::cout << "name: " << F1.GetName() << std::endl;
-	std::cout << "int: " << CF1.GetValue(vals[0]) << std::endl;
-	
+	std::cout << "int: " << IF.GetValue(vals[0]) << std::endl;
+	std::cout << "text: " << TF.GetValue(vals[1]) << std::endl;
+	std::cout << "float: " << FF.GetValue(vals[2]) << std::endl;
+	std::cout << "1.5: " << (double)1.5 << std::endl;
+
+	vals[2].v_float = 1.6; // set val is OK
+	std::cout << "float1.6: " << FF.GetValue(vals[2]) << std::endl;
 	return 0;
 }
