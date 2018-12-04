@@ -5,11 +5,11 @@
 
 
 enum ValueType {
-	ValueType_None = 0,
-	ValueType_Int,
-	ValueType_Float,
-	ValueType_Text,
-	ValueType_Blob,
+	ValueType_None = 0,	//
+	ValueType_Int,		// "INTEGER"
+	ValueType_Float,	// "REAL"
+	ValueType_Text,		// "TEXT"
+	ValueType_Blob,		// "NONE"
 	ValueType_Null,
 };
 struct Value
@@ -42,6 +42,18 @@ public:
 	virtual ~Field() {}
 	const std::string& GetName() const {return m_name;} 
 	const ValueType GetType() const {return m_type;}
+
+	std::string GenerateCreateTableSQL() {
+		static const char* SQL_COLUMN_TYPE[] = {
+			NULL,
+			"INTEGER",
+			"REAL",
+			"TEXT",
+			"NONE",  
+			NULL,
+		};
+		return m_name + " "	+ SQL_COLUMN_TYPE[m_type];
+	}
 };
 
 template <class T>
@@ -99,6 +111,13 @@ int main(int argc, char** argv)
 
 	vals[2].v_float = 1.6; // set val is OK
 	std::cout << "float1.6: " << FF.GetValue(vals[2]) << std::endl;
+
+
+	std::cout << "SQL: CREATE TABLE tbl_xxx(" 
+			  << IF.GenerateCreateTableSQL() << ", "
+			  << TF.GenerateCreateTableSQL() << ", "
+			  << FF.GenerateCreateTableSQL() << ");"
+			  << std::endl;
 	return 0;
 }
 
