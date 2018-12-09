@@ -54,8 +54,27 @@ public:
 		};
 		return m_name + " "	+ SQL_COLUMN_TYPE[m_type];
 	}
+
+	// template function
+	template <class T>
+	const T GetValueInt(const Value& val) const {
+		assert(m_type == val.type);
+		return static_cast<T>(val.v_int);
+	}
+	template <class T>
+	const T GetValueFloat(const Value& val) const {
+		assert(m_type == val.type);
+		return static_cast<T>(val.v_float);
+	}
+	template <class T>
+	const T GetValueText(const Value& val) const {
+		assert(m_type == val.type);
+		return static_cast<T>(val.v_text);
+	}
+
 };
 
+// template clss
 template <class T>
 class IntField : public Field {
 public:
@@ -90,7 +109,9 @@ public:
 	}
 };
 
-Field F1("aaa", ValueType_Int);
+Field F1("int", ValueType_Int);
+Field F2("text", ValueType_Text);
+Field F3("float", ValueType_Float);
 IntField<int> IF("ii");
 TextField<std::string> TF("ttt");
 FloatField<double> FF("ffff");
@@ -98,12 +119,17 @@ FloatField<double> FF("ffff");
 Value vals[] = {
 	{ValueType_Int, "name-int", sizeof(int64_t), 123},
 	{ValueType_Text, "name-text", 3, (int64_t)"xyg"},
-	{ValueType_Float, "name-float", sizeof(double), static_cast<double>(1.5)}, // XX: val is shown as 5.94064-324 not 1.5.
+	{ValueType_Float, "name-float", sizeof(double), (int64_t)static_cast<double>(1.5)}, // XX: val is shown as 5.94064-324 not 1.5.
 };
  
 int main(int argc, char** argv)
 {
 	std::cout << "name: " << F1.GetName() << std::endl;
+	// template function
+	std::cout << "func int: " << F1.GetValueInt<int>(vals[0]) << std::endl;
+	std::cout << "func text: " << F2.GetValueText<std::string>(vals[1]) << std::endl;
+	std::cout << "func float: " << F3.GetValueFloat<float>(vals[2]) << std::endl;
+	// template class
 	std::cout << "int: " << IF.GetValue(vals[0]) << std::endl;
 	std::cout << "text: " << TF.GetValue(vals[1]) << std::endl;
 	std::cout << "float: " << FF.GetValue(vals[2]) << std::endl;
