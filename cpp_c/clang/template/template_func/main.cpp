@@ -119,7 +119,7 @@ FloatField<double> FF("ffff");
 Value vals[] = {
 	{ValueType_Int, "name-int", sizeof(int64_t), 123},
 	{ValueType_Text, "name-text", 3, (int64_t)"xyg"},
-	{ValueType_Float, "name-float", sizeof(double), (int64_t)static_cast<double>(1.5)}, // XX: val is shown as 5.94064-324 not 1.5.
+	{ValueType_Float, "name-float", sizeof(double), {.v_float = 1.5}}, // XX: val is shown as 5.94064-324 not 1.5.
 };
  
 int main(int argc, char** argv)
