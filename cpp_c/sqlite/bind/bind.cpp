@@ -135,7 +135,7 @@ void sql_stmt(const char* stmt) {
 }
 
 int main() {
-  sqlite3_open("./bind_insert.db", &db);
+  sqlite3_open("./bind_insert_test.db", &db);
 
   if(db == 0) {
     printf("\nCould not open database.");
