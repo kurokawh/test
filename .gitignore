@@ -9,6 +9,7 @@ Release
 *.sdf
 *.suo
 *test.db
+*.sqlite3
 *.so
 *.o
 *.a
