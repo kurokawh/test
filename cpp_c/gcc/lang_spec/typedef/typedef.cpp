@@ -44,3 +44,17 @@ int main(int argc, char** argv)
 	printf("OK!\n");
 	return 0;
 }
+
+
+
+namespace other {
+//	typedef original::OrgEnum::ENUM_C OTHER_ENUM_C;
+#define 	OTHER_ENUM_C 	 original::OrgEnum::ENUM_C
+const original::OrgEnum OTHER_ENUM_B = original::OrgEnum::ENUM_C;
+}
+
+void test()
+{
+	mine::test(OTHER_ENUM_C);
+	mine::test(other::OTHER_ENUM_B);
+}
