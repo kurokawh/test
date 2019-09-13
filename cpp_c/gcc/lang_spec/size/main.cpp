@@ -8,6 +8,12 @@
 
 int main(int argc, char** argv)
 {
+	std::cout << "int: "  << sizeof(int)  << std::endl;
+	std::cout << "unsigned int: "  << sizeof(unsigned int)  << std::endl;
+
+	std::cout << "long long: " << sizeof(long long) << std::endl;
+	std::cout << "long: " << sizeof(long) << std::endl;
+
 	std::cout << "INT64: "  << sizeof(int64_t)  << std::endl;
 	std::cout << "UINT64: " << sizeof(uint64_t) << std::endl;
 
