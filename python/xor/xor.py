@@ -17,8 +17,17 @@ b = "32510ba9babebbbefd001547a810e67149caee11d945cd7fc81a05e9f85aac650e9052ba6a8
 
 binary_a = a.decode("hex")
 binary_b = b.decode("hex")
-def xor_strings(xs, ys):
+def xor_bin(xs, ys):
     return "".join(chr(ord(x) ^ ord(y)) for x, y in zip(xs, ys))
 
-xored = xor_strings(binary_a, binary_b).encode("hex")
+xored = xor_bin(binary_a, binary_b).encode("hex")
 print xored
+
+
+
+def xor_string(xs, ys):
+    xb = xs.decode("hex")
+    yb = ys.decode("hex")
+    rb = "".join(chr(ord(x) ^ ord(y)) for x, y in zip(xb, yb))
+    return rb.encode("hex")
+print(xor_string(a, b))
