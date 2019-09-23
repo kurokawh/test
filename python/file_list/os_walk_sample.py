@@ -12,3 +12,13 @@ for root, dirs, files in os.walk('.'):
 #            with open(file_path) as f:
 #                print(f.read())
 #                print()
+
+
+# https://www.sejuku.net/blog/63816
+for curDir, dirs, files in os.walk(".."):
+    print('===================')
+    print("current dir: " + curDir)
+    print("found dir: ")
+    print(dirs)
+    print("found file: ")
+    print(files)
