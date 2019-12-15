@@ -1,8 +1,10 @@
 a.out*
+a.exe
+a.txt
 *~
 \#*#
-a.exe
 .vs
+env
 obj
 Debug
 Release

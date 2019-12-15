@@ -11,6 +11,8 @@
     <OutputPath>.</OutputPath>
     <Name>generate_hash_from_files</Name>
     <RootNamespace>generate_hash_from_files</RootNamespace>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
