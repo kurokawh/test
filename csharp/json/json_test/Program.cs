@@ -75,6 +75,7 @@ namespace json_test
 		}
         static void testDeserializeClasses()
         {
+            ArrayTest.test();
 			string input = null;
 			Test test = new Test();
 
