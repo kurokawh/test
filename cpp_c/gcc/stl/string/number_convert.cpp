@@ -9,18 +9,18 @@ int main(int argc, char** argv)
 
 	std::string str = "2018";
 
-    int decimal = str = std::stoi(str);
-    ss << "10進数：" << decimal << "\n";
+    int decimal = std::stoi(str);
+    std::cout << "10進数：" << decimal << "\n";
 
 	std::string not_num = "abcd";
-    decimal = str = std::stoi(not_num);
-    ss << "not_num：" << decimal << "\n";
+    decimal = std::stoi(not_num);
+    std::cout << "not_num：" << decimal << "\n";
 
 	std::string empty = "";
-    decimal = str = std::stoi(empty);
-    ss << "empty：" << decimal << "\n";
+    decimal = std::stoi(empty);
+    std::cout << "empty：" << decimal << "\n";
 
-    std::cout << ss.str() << "\n";
+    std::cout << "\n";
 
 	return 0;
 }
