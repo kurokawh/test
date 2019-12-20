@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdint.h>
 
+// check behavoir of "public" inheritance and "private" inheritance.
+//
+
 class A {
 	int a;
 public:
@@ -63,6 +66,17 @@ int main(int argc, char** argv)
 
 	test(*a, "A");
 	test(*spa, "SubPublicA");
+
+
+	printf("== private test==>\n");
+// compile error
+//	a = new SubPrivateA; // 'A' is an inaccessible base of 'SubPrivateA'
+	SubPrivateA* sp = new SubPrivateA;
+//	sp->test(*sp); // 'A' is an inaccessible base of 'SubPrivateA'
+	sp->test(*a);
+	delete sp;
+
+	delete a;
 	delete spa;
 	return 0;
 }
