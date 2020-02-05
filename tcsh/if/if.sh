@@ -63,11 +63,11 @@ endif
 if ( $x < 10 ) then
     echo "x(1) is smaller than 10"
 else
-	echo "x is bigger than 10"
+	echo "x is bigger than 10 or equal to 10."
 endif
 
 if ( $x < 0 ) then
     echo "x is smaller than 0"
 else
-	echo "x is bigger than 0"
+	echo "x is bigger than 0 or equal to 0"
 endif
