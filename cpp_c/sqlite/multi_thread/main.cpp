@@ -1,7 +1,14 @@
+// use statemant from multi thread test.
+// (this main.cpp is copied from ../mem_consumption_check/main.cpp)
+// 
+// - https://sqlite.org/threadsafe.html
+// 
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <sqlite3.h>
+#include <pthread.h>
 #include <assert.h>
 
 #include <unistd.h> // unlink
@@ -376,36 +383,8 @@ int check_args(int argc, char** argv)
 	return 0;
 }
 
-int main ( int argc, char **argv )
+int insert_data(sqlite3* db)
 {
-	int ret = check_args(argc, argv);
-	if (ret) {
-		printf("invalid argument error!\n");
-		return -1;
-	}
-
-	if (new_db) {
-		unlink(db_name);
-	}
-	soft_heap_limit = sqlite3_soft_heap_limit64(soft_heap_limit);
-	if ( soft_heap_limit < 0 ) {
-		ret = soft_heap_limit;
-		printf("sqlite3_soft_heap_limit() error: %x", ret);
-	} else {
-		printf("sqlite3_soft_heap_limit64(): prev: %ld (byte) is set to: %lld (byte).\n", soft_heap_limit, sqlite3_soft_heap_limit64(-1));
-	}
-
-
-	sqlite3 *db = NULL;
-	ret = sqlite3_open_v2 (db_name, &db, 
-		SQLITE_OPEN_CREATE|SQLITE_OPEN_READWRITE, 
-		NULL);
-	if ( ret != SQLITE_OK )
-	{
-		printf ( "Can't open database: %s\n", sqlite3_errmsg ( db ) );
-		return -1;
-	}
-
 	if (new_db) {
 		// create table, transaction is useful for speed optimization
 		printf("== execute sql_create_table ==\n");
@@ -414,6 +393,7 @@ int main ( int argc, char **argv )
 		printf("== use existing db: %s ==\n", db_name);
 	}
 
+	int ret = 0;
 	int sql_count = 0;
 	int trans_count = 0;
 	uint64_t total_time = 0;
@@ -462,17 +442,107 @@ int main ( int argc, char **argv )
 		printf("maximum memory highwater: %ld, average high water / transaction: %lu\n", max_highwater, total_highwater / trans_count);
 	}
 
-/*
-	// select
-	const char *sql_select[] =
+	return ret;
+}
+struct ThreadParam {
+	int id;
+	sqlite3 *db;
+	int num;
+};
+void* select_thread_func(void *data)
+{
+	ThreadParam* param = (ThreadParam*)data;
+	param->num = 0;
+
+	sqlite3 *db = param->db;
+	sqlite3_stmt *stmt;
+	int result = SQLITE_OK;
+
+
+
+	sqlite3_prepare_v2(db, "SELECT * FROM tbl1", -1, &stmt, NULL);
+
+	int i = 0;
+	for (result = sqlite3_step(stmt); result == SQLITE_ROW; result = sqlite3_step(stmt), i++)
 	{
-		"SELECT * FROM tbl1;", // select all
-		"SELECT id, c1_int FROM tbl1 WHERE 1 < id;", // select 1 < id
-		NULL, // terminater
-	};
-	printf("\n== execute sql_select ==\n");
-	exec_sql(db, sql_select);
-*/
+		sqlite3_int64 id = sqlite3_column_int64(stmt, 0);
+		sqlite3_int64 c1 = sqlite3_column_int64(stmt, 1);
+		const unsigned char* c2 = sqlite3_column_text(stmt, 2);
+		printf("th-%d[%d]: %ld, %ld, %s\n", param->id, i, id, c1, c2);
+
+		if ((i + 1) % 10 == 0) {
+			sleep(1);
+		}
+	}
+	if (result != SQLITE_DONE) {
+		printf("sqlite3_step() error: %d\n", result);
+	}
+	param->num = i;
+
+	sqlite3_finalize(stmt);
+
+	return param;
+}
+
+int main ( int argc, char **argv )
+{
+	printf("sqlite3_threadsafe(): %d\n", sqlite3_threadsafe());
+	int ret = check_args(argc, argv);
+	if (ret) {
+		printf("invalid argument error!\n");
+		return -1;
+	}
+
+	if (new_db) {
+		printf("unlink: %s\n", db_name);
+		unlink(db_name);
+	} else {
+		printf("use existing db: %s\n", db_name);
+	}
+
+
+	sqlite3 *db = NULL;
+	ret = sqlite3_open_v2 (db_name, &db, 
+		SQLITE_OPEN_CREATE|SQLITE_OPEN_READWRITE, 
+		NULL);
+	if ( ret != SQLITE_OK )
+	{
+		printf ( "Can't open database: %s\n", sqlite3_errmsg ( db ) );
+		return -1;
+	}
+
+
+	ret = insert_data(db);
+	if (ret) {
+		printf("insert_data() failed: %d\n", ret);
+		return ret;
+	}
+
+#define THREAD_NUM 5
+	pthread_t th[THREAD_NUM];
+	void *th_ret[THREAD_NUM];
+	for (int i = 0; i < THREAD_NUM; i++) {
+		ThreadParam* param = new ThreadParam;
+		param->id = i;
+		param->db = db;
+		ret = pthread_create(&th[i], NULL, select_thread_func, (void*)param);
+		if (ret != 0) {
+			printf("%d: pthread_create() error: %d", i, ret);
+			return 1;
+		}
+	}
+	for (int i = 0; i < THREAD_NUM; i++) {
+	  int ret = pthread_join(th[i], &th_ret[i]);
+	  ThreadParam* param = (ThreadParam*)th_ret[i];
+	  printf("th_ret[%d]: %p: ret: %d, num: %d\n", i, th_ret[i], ret, param->num);
+	  if (ret != 0) {
+		  perror("pthread_join");
+		  return 1;
+	  }
+	  delete param;
+	}
+
+
 	sqlite3_close ( db );
 
 	return 0;
