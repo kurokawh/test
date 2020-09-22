@@ -23,16 +23,19 @@ thread_start_routine(void *data)
   return NULL;
 }
 
+#define THREAD_NUM 10
 int
 main()
 {
   int i;
-  pthread_t th;
-  void *th_ret;
+  pthread_t th[THREAD_NUM];
+  void *th_ret[THREAD_NUM];
 
-  if (pthread_create(&th, NULL, thread_start_routine, (void *)100) != 0) {
-    perror("pthread_create");
-    return 1;
+  for (int j = 0; j < THREAD_NUM; j++) {
+	  if (pthread_create(&th[j], NULL, thread_start_routine, (void *)100) != 0) {
+		  perror("pthread_create");
+		  return 1;
+	  }
   }
 
   for (i=0; i<10; i++) {
@@ -42,9 +45,13 @@ main()
     sleep(1);
   }
 
-  if (pthread_join(th, &th_ret) != 0) {
-    perror("pthread_join");
-    return 1;
+  for (int j = 0; j < THREAD_NUM; j++) {
+	  int ret = pthread_join(th[j], &th_ret[j]);
+	  printf("th_ret[%d]: %p: ret: %d\n", j, th_ret[j], ret);
+	  if (ret != 0) {
+		  perror("pthread_join");
+		  return 1;
+	  }
   }
 
   return 0;
