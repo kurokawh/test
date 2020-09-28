@@ -4,26 +4,15 @@
 #include <sqlite3.h>
 #include <assert.h>
 
-#ifdef __ORBIS__
-#include <kernel.h>
-#include "paf/file/localfile.h"
-#include "paf/thread/sleep.h"
-
-#define unlink paf::LocalFile::RemoveFile
-#define DBNAME "/app0/test.db"
-#else // __ORBIS__
 #include <unistd.h> // unlink
 #include <time.h>
 
-#define sceKernelGetProcessTime clock
 #define DBNAME "test.db"
-#endif // __ORBIS__
 
 
 #define BUF_SIZE (256 * 1024) // 256 KB
 #define TEXT_VALUE_BUF_SIZE (32 * 1024) // each text val: 32KB
 
-size_t sceLibcHeapSize	= 32 * 1024 * 1024; // 32 MB
 
 static int total_sql_num = 1000;
 static int max_sql_in_trans = 100;
@@ -235,7 +224,6 @@ exec_sql_list ( sqlite3 *db, const char **sqls )
 			sqlite3_free ( zErrMsg );
 			break;
 		}
-		//paf::thread::Sleep(1000);
 	}
 
 	printf("sqlite3_memory_highwater(): %lld\n", sqlite3_memory_highwater(true));
@@ -432,7 +420,7 @@ int main ( int argc, char **argv )
 	int64_t max_highwater = 0;
 	uint64_t total_highwater = 0;
 	do {
-		uint64_t start_time = sceKernelGetProcessTime();
+		uint64_t start_time = clock();
 		ret = start_transaction(db);
 		if (ret) {
 			printf("start_transaction() err: %x\n", ret);
@@ -456,7 +444,7 @@ int main ( int argc, char **argv )
 			printf("end_transaction() err: %x\n", ret);
 			break;
 		}
-		uint64_t end_time = sceKernelGetProcessTime();
+		uint64_t end_time = clock();
 		total_time += end_time - start_time;
 
 		printf("[%d] th transaction is end. operated sql num: %d, time: %lu (us)", trans_count, sql_count, end_time - start_time);
