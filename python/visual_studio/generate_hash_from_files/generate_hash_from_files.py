@@ -35,11 +35,11 @@ if (os.path.exists(DEST_FILE_NAME)):
     print("no need calc hash.")
 else:
     programCsList = find_target_files(r"..\..\..\csharp\*\*\*.csproj")
-    print programCsList
+    print(programCsList)
     hashList = map(generate_hash, programCsList)
-    print hashList
+    print(hashList)
     hash = reduce(xor_strings, hashList)
-    print hash
+    print(hash)
 
     f = open(DEST_FILE_NAME, 'w')
     f.write("#define PROGRAM_CS_HASH 0x" + hash + "L")
