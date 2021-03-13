@@ -33,5 +33,11 @@ def http_get(base, tid) :
 
 
 # xxx https://ps5.np.playstation.net/api/catalog/v2/titles/ CUSA11456
-http_get(sys.argv[1], sys.argv[2])
+#http_get(sys.argv[1], sys.argv[2])
+
+
+# for i in range (0, 10):
+for i in range (11456, 11460):
+    tid = "CUSA" + str(i).zfill(5)
+    http_get("https://ps5.np.playstation.net/api/catalog/v2/titles/", tid)
 
