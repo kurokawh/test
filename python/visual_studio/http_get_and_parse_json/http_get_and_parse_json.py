@@ -25,9 +25,16 @@ def http_get(base, tid) :
     url = base + tid + "/concept"
     # print("url: " + url)
 
-    # sending get request and saving the response as response object 
-    r = requests.get(url, verify = False) 
-
+    try:
+        # sending get request and saving the response as response object 
+        r = requests.get(url, verify = False) 
+    except requests.exceptions.ConnectionError as e:
+        line = "exception: {0}".format(tid)
+        print(line)
+        file_err.write(line + "\n")
+        file_err.write(str(e) + "\n")
+        return
+    
 
     if (r.status_code == 200):
         # extracting data in json format 
