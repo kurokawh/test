@@ -1,5 +1,11 @@
 # importing the requests library 
 import requests 
+import urllib3
+
+# disable InsecureRequestWarning warning for unknown cert.
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
 
 title_id = "CUSA11456"
   
