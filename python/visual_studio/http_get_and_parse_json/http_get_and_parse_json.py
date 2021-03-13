@@ -16,13 +16,14 @@ fqdn = sys.argv[1]
 DEST_CSV_FILE_NAME = "ok.txt"
 DEST_SKIP_FILE_NAME = "skip.txt"
 DEST_ERR_FILE_NAME = "err.txt"
+MAX_RETRY = 5
   
 file_ok = open(DEST_CSV_FILE_NAME, 'w')
 file_skip = open(DEST_SKIP_FILE_NAME, 'w')
 file_err = open(DEST_ERR_FILE_NAME, 'w')
 
 def http_get(base, tid, retry):
-    if (retry >= 3):
+    if (retry >= MAX_RETRY):
         return
 
     url = base + tid + "/concept"
