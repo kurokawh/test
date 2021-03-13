@@ -38,7 +38,7 @@ def http_get(base, tid) :
         name = data['nameEn']
         type = data['type']
         # printing the output 
-        line = "{0},\"{1}\",{2},{3},".format(concept_id, name, type, tid)
+        line = "OK: {0},\"{1}\",{2},{3},".format(concept_id, name, type, tid)
         print(line) 
         file_ok.write(line + "\n")
     elif (r.status_code == 404):
@@ -46,10 +46,10 @@ def http_get(base, tid) :
         print(line) 
         file_skip.write(line + "\n")
     else:
-        line = "error: {0}".format(tid)
+        line = "{0}: {1}".format(str(r.status_code), tid)
         print(line)
         file_err.write(line + "\n")
-        file_err.write(r + "\n")
+        file_err.write(str(r) + "\n")
 
 
 
