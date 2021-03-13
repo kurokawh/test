@@ -13,7 +13,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def http_get(base, tid) :  
     url = base + tid + "/concept"
-    print("url: " + url)
+    # print("url: " + url)
 
     # sending get request and saving the response as response object 
     r = requests.get(url, verify = False) 
@@ -35,7 +35,7 @@ def http_get(base, tid) :
 #http_get(sys.argv[1], sys.argv[2])
 
 # for i in range (0, 10):
-for i in range (11456, 11470):
+for i in range (11456, 11500):
     tid = "CUSA" + str(i).zfill(5) + "_00"
     http_get("https://ps5.np.playstation.net/api/catalog/v2/titles/", tid)
 
