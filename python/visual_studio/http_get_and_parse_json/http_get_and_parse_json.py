@@ -21,18 +21,26 @@ file_ok = open(DEST_CSV_FILE_NAME, 'w')
 file_skip = open(DEST_SKIP_FILE_NAME, 'w')
 file_err = open(DEST_ERR_FILE_NAME, 'w')
 
-def http_get(base, tid) :  
+def http_get(base, tid, retry):
+    if (retry >= 3):
+        return
+
     url = base + tid + "/concept"
     # print("url: " + url)
 
+    callAgain = False
     try:
         # sending get request and saving the response as response object 
         r = requests.get(url, verify = False) 
     except requests.exceptions.ConnectionError as e:
-        line = "exception: {0}".format(tid)
+        line = "exception (retry: {0}): {1}".format(retry, tid)
         print(line)
         file_err.write(line + "\n")
         file_err.write(str(e) + "\n")
+        callAgain = True
+
+    if callAgain:
+        http_get(base, tid, retry + 1)
         return
     
 
@@ -63,7 +71,7 @@ def http_get(base, tid) :
 # for i in range (0, 10):
 for i in range (11456, 11500):
     tid = "CUSA" + str(i).zfill(5) + "_00"
-    http_get("https://" + fqdn + "/api/catalog/v2/titles/", tid)
+    http_get("https://" + fqdn + "/api/catalog/v2/titles/", tid, 0)
 
 
 file_ok.close()
