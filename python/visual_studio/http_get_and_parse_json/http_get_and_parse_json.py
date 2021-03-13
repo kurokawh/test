@@ -1,4 +1,5 @@
 # importing the requests library 
+import sys
 import requests 
 import urllib3
 
@@ -28,9 +29,9 @@ def http_get(base, tid) :
     type = data['type']
 
     # printing the output 
-    print("%s,%s,%s,%s" %(title_id, concept_id, name, type)) 
+    print("%s,%s,%s,%s" %(tid, concept_id, name, type)) 
 
 
-
-http_get("https://ps5.np.playstation.net/api/catalog/v2/titles/", "CUSA11456")
+# xxx https://ps5.np.playstation.net/api/catalog/v2/titles/ CUSA11456
+http_get(sys.argv[1], sys.argv[2])
 
