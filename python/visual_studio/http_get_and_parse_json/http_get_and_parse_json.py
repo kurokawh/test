@@ -51,7 +51,7 @@ def http_get(base, tid, retry):
         # extracting latitude, longitude and formatted address  
         # of the first matching location 
         concept_id = data['id']
-        name = data['nameEn']
+        name = data.get('nameEn', tid) # use get() because `nameEn` may does not exist
         type = data['type']
         # printing the output 
         line = "OK: {0},\"{1}\",{2},{3},".format(concept_id, name, type, tid)
@@ -69,8 +69,8 @@ def http_get(base, tid, retry):
 
 
 
-#for i in range (11456, 11500):
-for i in range (0, 100000):
+for i in range (1517, 1520):
+#for i in range (0, 100000):
     tid = "CUSA" + str(i).zfill(5) + "_00"
     http_get("https://" + fqdn + "/api/catalog/v2/titles/", tid, 0)
 
