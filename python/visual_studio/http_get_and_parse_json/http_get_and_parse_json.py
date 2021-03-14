@@ -44,32 +44,33 @@ def http_get(base, tid, retry):
         http_get(base, tid, retry + 1)
         return
     
-
     if (r.status_code == 200):
         # extracting data in json format 
         data = r.json() 
-        # extracting latitude, longitude and formatted address  
-        # of the first matching location 
         concept_id = data['id']
         name = data.get('nameEn', tid) # use get() because `nameEn` may does not exist
         type = data['type']
-        # printing the output 
-        line = "OK: {0},\"{1}\",{2},{3},".format(concept_id, name, type, tid)
-        print(line) 
+        # print to OK file in csv file format
+        line = "{0},\"{1}\",{2},{3},".format(concept_id, name, type, tid)
+        print("OK: " + line) 
         file_ok.write(line + "\n")
     elif (r.status_code == 404):
+        # server does not have this entry.
         line = "404: {0}".format(tid)
         print(line) 
         file_skip.write(line + "\n")
     else:
-        line = "{0}: {1}".format(str(r.status_code), tid)
+        # other unexpected error. need retry
+        line = "{0} (retry: {1}): {2}".format(str(r.status_code), retry, tid)
         print(line)
         file_err.write(line + "\n")
-        file_err.write(str(r) + "\n")
+        #file_err.write(str(r) + "\n")
+        http_get(base, tid, retry + 1)
+        return
+    return
 
 
-
-for i in range (1517, 1520):
+for i in range (0, 5):
 #for i in range (0, 100000):
     tid = "CUSA" + str(i).zfill(5) + "_00"
     http_get("https://" + fqdn + "/api/catalog/v2/titles/", tid, 0)
