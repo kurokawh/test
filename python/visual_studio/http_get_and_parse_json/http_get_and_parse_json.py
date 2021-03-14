@@ -70,8 +70,8 @@ def http_get(base, tid, retry):
     return
 
 
-for i in range (0, 5):
-#for i in range (0, 100000):
+#for i in range (0, 5):
+for i in range (0, 100000):
     tid = "CUSA" + str(i).zfill(5) + "_00"
     http_get("https://" + fqdn + "/api/catalog/v2/titles/", tid, 0)
 
