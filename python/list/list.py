@@ -7,10 +7,12 @@
 l = list(range(3))
 print(l)
 # [0, 1, 2]
+print("len: " + str(len(l)))
 
 l.append(100)
 print(l)
 # [0, 1, 2, 100]
+print("len: " + str(len(l)))
 
 l.append('new')
 print(l)
