@@ -265,9 +265,11 @@ static int print_pragma()
 static int set_pragma()
 {
 	sqlite3_stmt *stmt;
+	int ret = 0;
 
-	if ( sqlite3_prepare(
+	if ( ret = sqlite3_prepare(
 			 db, 
+//#define USE_PLACE_HOLDER // XXX: near "?": syntax error in sqlite3_prepare
 #ifdef USE_PLACE_HOLDER
 			 "pragma cache_size = ?",  // stmt
 #else // USE_PLACE_HOLDER
@@ -278,7 +280,8 @@ static int set_pragma()
 			 0  // Pointer to unused portion of stmt
 			 )
 		 != SQLITE_OK) {
-		printf("\nCould not prepare statement.");
+		printf("\nCould not prepare statement. ret: %d\n", ret);
+		printf("sqlite3_errmsg() %s\n", sqlite3_errmsg(db));
 		return 1;
 	}
 #ifdef USE_PLACE_HOLDER
