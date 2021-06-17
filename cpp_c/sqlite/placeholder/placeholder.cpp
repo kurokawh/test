@@ -269,9 +269,10 @@ static int set_pragma()
 
 	if ( ret = sqlite3_prepare(
 			 db, 
-//#define USE_PLACE_HOLDER // XXX: near "?": syntax error in sqlite3_prepare
+#define USE_PLACE_HOLDER // XXX: near "?": syntax error in sqlite3_prepare
 #ifdef USE_PLACE_HOLDER
-			 "pragma cache_size = ?",  // stmt
+//			 "insert into foo values (?,'xxx')",  // this stmt works fine
+			 "pragma cache_size = ?",  // this stmt returns ERROR.
 #else // USE_PLACE_HOLDER
 			 "pragma cache_size = 200",  // stmt
 #endif // USE_PLACE_HOLDER
