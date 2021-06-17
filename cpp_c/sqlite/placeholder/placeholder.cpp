@@ -223,13 +223,14 @@ static int count_callback(
 } // end of checkTable_Callback()
 
 
-static int print_count()
+static int print_pragma()
 {
 	sqlite3_stmt *stmt;
 
 	if ( sqlite3_prepare(
 			 db, 
-			 "select count(*) from foo",  // stmt
+//			 "select count(*) from foo",  // stmt
+			 "pragma cache_size",  // stmt
 			 -1, // If than zero, then stmt is read up to the first nul terminator
 			 &stmt,
 			 0  // Pointer to unused portion of stmt
@@ -238,6 +239,59 @@ static int print_count()
 		printf("\nCould not prepare statement.");
 		return 1;
 	}
+
+	while (true) {
+		int ret = sqlite3_step(stmt);
+
+		if (ret == SQLITE_BUSY) {
+			continue;
+		}
+		else if (ret == SQLITE_DONE) {
+			break;
+		}
+		else if (ret == SQLITE_ROW) {
+			int num = sqlite3_column_int(stmt, 0);
+			const unsigned char *name = sqlite3_column_text(stmt, 1);
+			printf("NUM=%d, NAME=%s\n", num, name);
+		}
+	}
+
+	// stmt を開放
+	sqlite3_finalize(stmt);
+
+	return 0;
+}
+
+static int set_pragma()
+{
+	sqlite3_stmt *stmt;
+
+	if ( sqlite3_prepare(
+			 db, 
+#ifdef USE_PLACE_HOLDER
+			 "pragma cache_size = ?",  // stmt
+#else // USE_PLACE_HOLDER
+			 "pragma cache_size = 200",  // stmt
+#endif // USE_PLACE_HOLDER
+			 -1, // If than zero, then stmt is read up to the first nul terminator
+			 &stmt,
+			 0  // Pointer to unused portion of stmt
+			 )
+		 != SQLITE_OK) {
+		printf("\nCould not prepare statement.");
+		return 1;
+	}
+#ifdef USE_PLACE_HOLDER
+	if (sqlite3_bind_int(
+			stmt,
+			1,  // Index of wildcard
+			100
+			)
+		!= SQLITE_OK) {
+		printf("\nCould not bind int.\n");
+		return 1;
+	}
+#endif // USE_PLACE_HOLDER
 
 	while (true) {
 		int ret = sqlite3_step(stmt);
@@ -278,7 +332,9 @@ int main() {
 	  return ret;
   }
 
-  print_count();
+  print_pragma();
+  set_pragma();
+  print_pragma();
 
   sqlite3_close(db);
   return 0;
