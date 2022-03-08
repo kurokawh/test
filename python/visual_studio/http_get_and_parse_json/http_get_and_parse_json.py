@@ -54,6 +54,7 @@ def http_get(base, tid, retry):
         line = "{0},\"{1}\",{2},{3},".format(concept_id, name, type, tid)
         print("OK: " + line) 
         file_ok.write(line + "\n")
+        file_ok.flush()
     elif (r.status_code == 404):
         # server does not have this entry.
         line = "404: {0}".format(tid)
