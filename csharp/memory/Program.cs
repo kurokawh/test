@@ -42,7 +42,7 @@ namespace ConsoleApp
 
 		static string RNPS_ACTION = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 		static string RNPS_ADULT = "yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy";
-		internal static readonly Dictionary<string, int> GENRE_TABLE = new Dictionary<string, int>()
+		internal static readonly Dictionary<string, int> TABLE = new Dictionary<string, int>()
 		{
 			{ RNPS_ACTION,  0 },
 			{ RNPS_ADULT,  0 },
